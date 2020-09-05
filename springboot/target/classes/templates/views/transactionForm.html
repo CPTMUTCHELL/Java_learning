@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Create transaction</title>
+</head>
+<body>
+<div>
+    <div  th:if="${out_of_money}">
+        <p >
+            Not enough money.
+        </p>
+    </div>
+    <div  th:if="${no_account_found}">
+        <p >
+            No account found.
+        </p>
+    </div>
+<form th:action="@{/createTransaction}"  th:object="${transaction}" method="post">
+
+<!--        <div th:object="${account}"  >-->
+<!--            <div  th:if="${#fields.hasErrors('balance')}" th:errors="*{balance  }"></div>-->
+<!--        </div>-->
+        <div>
+            <label for="sum">Sum</label>
+            <input type="number" th:field="*{sum}" id="sum" name="sum"/>
+        </div>
+
+        <div>
+            <label for="destination">Destination account</label>
+            <input type="text"  id="destination" name="destination"/>
+        </div>
+
+        <p> Select transaction type:</p>
+        <div>
+           <input type="radio" id="Auto" value="Auto" name="type" th:field="*{type}" checked>
+            <label for="Auto">Auto</label>
+        </div>
+
+        <div>
+            <input type="radio" id="House" value="House" name="type" th:field="*{type}" checked>
+            <label for="House">House</label>
+        </div>
+
+        <div>
+            <input type="radio" id="Food" value="Food" name="type" th:field="*{type}" checked>
+            <label for="Food">Food</label>
+        </div>
+
+
+    <input type="submit" value="Create"/>
+
+</form>
+</div>
+</body>
+</html>

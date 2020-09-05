@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<title>Login Form</title>
+</head>
+<body>
+<h2>Login</h2>
+<div >
+	<div th:if="${success}">
+		<p th:text="${login}"></p>
+	</div>
+	<div th:if="${param.error}">
+		<h2> Invalid login or password</h2>
+	</div>
+	<form th:action="@{/login}" method="post">
+		<div>
+			<label for="login">login</label>
+			<input type="text" id="login" name="username"/>
+
+		</div>
+		<div>
+			<label for="pass" >password</label>
+			<input type="password" id="pass" name="password"/>
+		</div>
+		<input type="submit" value="Log in"/></a>
+	</form>
+
+</div>
+<a th:href="@{/register}" >
+	<input type="submit" value="Register">
+</a>
+</body>
+</html>

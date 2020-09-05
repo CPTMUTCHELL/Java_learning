@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile page</title>
+</head>
+<body>
+<div>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Balance</th>
+                <th>Name</th>
+                <th>Create transaction</th>
+                <th>View transactions</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="account:${accounts}">
+                    <td th:text="${account.balance}"></td>
+                    <td th:text="${account.name}"></td>
+                    <td>
+                        <a th:href="@{/createTransaction(accountName=${account.name})}" name="accountName">
+                            <input type="submit" value="Create"/>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/viewTransactions(accountName=${account.name})}" name="accountName">
+                            <input type="submit" value="View transactions"/>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/deleteAccount(accountName=${account.name})}" name="accountName" >
+                            <input type="submit" value="Delete"/>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout"/>
+    </form>
+</div>
+
+<a  th:object="${user}" th:href="@{/addAccount(login=${user.login})}" >
+    <input type="submit" value="add account"/>
+</a>
+<div>
+<a  sec:authorize="hasRole('ROLE_ADMIN')"  th:href="@{/usersJson}" >
+    <input type="submit" value="View users(JSON)"/>
+</a>
+</div>
+<a  sec:authorize="hasRole('ROLE_ADMIN')"  th:href="@{/users}" >
+    <input type="submit" value="View users"/>
+</a>
+</div>
+</body>
+</html>

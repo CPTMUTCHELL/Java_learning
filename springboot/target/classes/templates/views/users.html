@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Login</th>
+                <th>Role</th>
+                <th>View accounts</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr  th:each="user:${users}"  >
+                <td th:text="${user.id==this_user.id} ? ${user.id + '(THIS)'} : ${user.id}"></td>
+                <td th:text="${user.login}"></td>
+                <td>
+                    <table>
+                        <tr th:each="roles:${user.roles}">
+                            <td th:text="${roles.role}"></td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td> <a th:href="@{/accounts(login=${user.login})}" name="login">
+                    <input type="submit" value="Show accounts"/>
+                    </a>
+                </td>
+
+                <td> <a th:href="@{/deleteUser(login=${user.login})}"name="login" >
+                    <input type="submit" value="Delete user"/>
+                </a>
+
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<p> <input type="button" value="<-back" onclick="history.back()"></p>
+
+</body>
+</html>

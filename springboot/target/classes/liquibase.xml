@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="1">
+        <createTable tableName="users">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="login" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pass" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="accounts">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="float">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="accounts" baseColumnNames="user_id"
+                                 constraintName="accounts_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="transaction">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="account_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_account_id" type="integer"/>
+            <column name="to_account_id" type="integer"/>
+            <column name="transaction_type_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sum" type="float">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="from_account_id"
+                                 constraintName="transaction_from_account_id"
+                                 referencedTableName="accounts"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="to_account_id"
+                                 constraintName="transaction_to_account_id"
+                                 referencedTableName="accounts"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+    <changeSet id="2" author="1">
+        <createTable tableName="transaction_type">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type" type="text"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="transaction_type_id"
+                                 constraintName="transaction_to_transaction_type_id"
+                                 referencedTableName="transaction_type"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+    <changeSet id="3" author="1">
+        <dropTable tableName="transaction_type"
+                   cascadeConstraints="true" />
+                <createTable tableName="category">
+                    <column name="id" type="int" autoIncrement="true">
+                        <constraints unique="true" nullable="false" primaryKey="true"/>
+                    </column>
+                    <column name="name" type="text"/>
+                </createTable>
+                <createTable tableName="transaction_category">
+                    <column name="transaction_id" type="int" />
+
+                    <column name="category_id" type="int"/>
+
+                </createTable>
+                <addForeignKeyConstraint baseTableName="transaction_category" baseColumnNames="transaction_id"
+                                         constraintName="transaction_id"
+                                         referencedTableName="transaction"
+                                         referencedColumnNames="id"/>
+                <addForeignKeyConstraint baseTableName="transaction_category" baseColumnNames="category_id"
+                                         constraintName="category_id"
+                                         referencedTableName="category"
+                                         referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="4" author="1">
+        <dropNotNullConstraint tableName="accounts" columnName="balance"/>
+    </changeSet>
+    <changeSet id="5" author="1">
+        <dropTable tableName="category" cascadeConstraints="true" />
+        <dropTable tableName="transaction_category" cascadeConstraints="true" />
+        <createTable tableName="transaction_type">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="type" type="integer"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="transaction_type_id"
+                                 constraintName="transaction_type_id" referencedTableName="transaction_type"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="6" author="1">
+        <modifyDataType tableName="transaction" columnName="transaction_date" newDataType="timestamptz"/>
+    </changeSet>
+    <changeSet id="7" author="1">
+        <dropColumn tableName="transaction" columnName="account_id"/>
+    </changeSet>
+    <changeSet id="8" author="1">
+        <modifyDataType tableName="transaction_type" columnName="type" newDataType="text"/>
+    </changeSet>
+    <changeSet id="9" author="1">
+        <dropNotNullConstraint tableName="transaction" columnName="transaction_date"/>
+    </changeSet>
+    <changeSet id="10" author="1">
+        <addColumn tableName="transaction">
+            <column name="account_id" type="integer"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="account_id"
+                                 constraintName="account_id" referencedTableName="accounts"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="11" author="1">
+        <dropColumn tableName="transaction" columnName="account_id"/>
+    </changeSet>
+    <changeSet id="12" author="1">
+      <createTable tableName="roles">
+          <column name="id" autoIncrement="true" type="integer">
+              <constraints unique="true" nullable="false" primaryKey="true"/>
+          </column>
+          <column name="role" type="text"/>
+      </createTable>
+        <createTable tableName="user_roles">
+            <column name="user_id" type="int"/>
+            <column name="roles_id" type="int"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="roles_id" constraintName="roles_to_role"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id" constraintName="user_to_role"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="13" author="1">
+        <addColumn tableName="users">
+            <column name="role" type="text"></column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="15" author="1">
+        <dropColumn tableName="users" columnName="role"></dropColumn>
+    </changeSet>
+    <changeSet id="16" author="1">
+        <dropNotNullConstraint tableName="accounts" columnName="user_id"/>
+    </changeSet>
+    <changeSet id="17" author="1">
+        <dropTable tableName="transaction_type" cascadeConstraints="true"/>
+        <createTable tableName="transaction_type">
+            <column name="type" type="text" >
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+        </createTable>
+        <dropColumn tableName="transaction" columnName="transaction_type_id"/>
+        <addColumn tableName="transaction">
+            <column name="transaction_type" type="text"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="transaction_type"
+                                 constraintName="transaction_to_type" referencedTableName="transaction_type"
+                                 referencedColumnNames="type"/>
+
+    </changeSet>
+
+</databaseChangeLog>

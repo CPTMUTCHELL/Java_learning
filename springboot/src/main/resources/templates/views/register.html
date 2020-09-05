@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Register From</title>
+</head>
+<body>
+<h2>Registration</h2>
+<div >
+    <div  th:if="${exist}">
+        <p >
+        User already exists.
+        </p>
+    </div>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div>
+            <label for="login">login</label>
+            <input type="text" th:field="*{login}" id="login" name="login"/>
+            <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+        </div>
+        <div>
+            <label for="pass" >password</label>
+            <input type="text" th:field="*{pass}" id="pass"/>
+            <div  th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}"></div>
+
+
+        </div>
+        <input type="submit" value="Submit"/>
+
+    </form>
+</div>
+
+</body>
+</html>

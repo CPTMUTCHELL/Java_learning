@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add account</title>
+</head>
+<body>
+<div >
+    <div th:if="${exist}">
+        <p>Account already exists</p>
+    </div>
+    <form th:action="@{/addAccount}" th:object="${account}" method="post">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="Name" th:field="*{name}"/>
+        </div>
+        <div>
+            <label for="balance" >Balance</label>
+            <input type="number" id="balance" th:field="*{balance}"/>
+        </div>
+        <input type="submit" value="Submit"/>
+
+    </form>
+</div>
+
+</body>
+</html>

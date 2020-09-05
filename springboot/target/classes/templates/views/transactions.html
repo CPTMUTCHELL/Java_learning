@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Transactions</title>
+</head>
+<body>
+<div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Sum</th>
+            <th>Type</th>
+            <th>Source account</th>
+            <th>Destination account</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="iTransaction:${incomingTransactions}" >
+            <td th:text="${iTransaction.date}"></td>
+            <td th:text="${iTransaction.sum}"></td>
+            <td th:text="${iTransaction.type}"></td>
+            <td th:text="${iTransaction.fromAccount.name}"></td>
+            <td th:text="${iTransaction.toAccount.name}"></td>
+        </tr>
+        <tr th:each="oTransaction:${outgoingTransactions}" >
+            <td th:text="${oTransaction.date}"></td>
+            <td th:text="${oTransaction.sum}"></td>
+            <td th:text="${oTransaction.type}"></td>
+            <td th:text="${oTransaction.fromAccount.name}"></td>
+            <td th:text="${oTransaction.toAccount.name}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+<form>
+    <input type="button" value="<-back" onclick="history.back()">
+</form>
+</body>
+</html>
